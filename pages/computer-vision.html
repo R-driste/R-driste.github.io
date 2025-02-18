@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoFriend - Computer Vision</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>EcoFriend - Computer Vision</h1>
+        <nav>
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            <a href="/cv"><i class="fas fa-eye"></i> Computer Vision</a>
+            <a href="/ch"><i class="fas fa-comments"></i> Chatbot</a>
+            <a href="/mission"><i class="fas fa-bullseye"></i> Our Mission</a>
+            <a href="/tips"><i class="fas fa-leaf"></i> Tips</a>
+            <a href="/process"><i class="fas fa-cogs"></i> Our Process</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Live Trash Detection</h2>
+        <video id="video" width="640" height="480" autoplay></video>
+        <div class="controls">
+            <button id="startButton">Start Detection</button>
+            <button id="stopButton">Stop Detection</button>
+        </div>
+        <div id="output"></div>
+    </main>
+    <footer>
+        <p>&copy; 2025 EcoFriend. All rights reserved.</p>
+    </footer>
+    <script src="../script.js"></script>
+    <script>
+        document.getElementById('startButton').addEventListener('click', () => {
+            fetch('/run-python')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('output').innerText = data;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

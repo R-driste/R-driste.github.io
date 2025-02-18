@@ -1,26 +1,53 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     text-align: center;
     background-color: #f0f0f0;
     margin: 0;
     padding: 0;
+    color: #333;
 }
 
 header {
     background-color: #4CAF50;
     color: white;
-    padding: 1em 0;
+    padding: 0.5em 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav {
+    margin-top: 0.5em;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 0.5em;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+nav a:hover {
+    text-decoration: underline;
 }
 
 main {
     margin: 2em auto;
     width: 80%;
     max-width: 800px;
+    background-color: white;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #4CAF50;
 }
 
 video {
     border: 2px solid #4CAF50;
     border-radius: 8px;
+    margin-top: 1em;
 }
 
 .controls {
@@ -35,8 +62,46 @@ button {
     margin: 0 0.5em;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
     background-color: #45a049;
+}
+
+footer {
+    background-color: #4CAF50;
+    color: white;
+    padding: 1em 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+footer p {
+    margin: 0;
+}
+
+.navigation-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 1em;
+}
+
+aside {
+    background-color: #e0e0e0;
+    padding: 1em;
+    border-radius: 8px;
+    width: 45%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+aside h3 {
+    color: #4CAF50;
+}
+
+aside p {
+    margin: 0.5em 0;
 }
