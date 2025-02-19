@@ -47,6 +47,55 @@ app.post('/run-python', async (req, res) => {
     }
 });
 
+app.get('/start-independent', (req, res) => {
+    const pythonProcess = spawn('python', ['C:/Users/stidr/ECOFRIEND/R-driste.github.io/object_detection.py']);
+
+    pythonProcess.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`);
+    });
+
+    pythonProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    pythonProcess.on('close', (code) => {
+        if (code === 0) {
+            res.send('Independent video processing started.');
+        } else {
+            res.status(500).send(`Python script exited with code ${code}`);
+        }
+    });
+});
+
+app.post('/chat', async (req, res) => {
+    const { message } = req.body;
+    const apiKey = 'YOUR_OPENAI_API_KEY'; // Replace with your OpenAI API key
+
+    console.log('Received message:', message);
+
+    try {
+        const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
+            prompt: message,
+            max_tokens: 150,
+            n: 1,
+            stop: null,
+            temperature: 0.7,
+        }, {
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const chatResponse = response.data.choices[0].text.trim();
+        console.log('ChatGPT response:', chatResponse);
+        res.json({ response: chatResponse });
+    } catch (error) {
+        console.error('Error communicating with ChatGPT API:', error);
+        res.json({ response: "Sorry, I'm not available right now." });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });

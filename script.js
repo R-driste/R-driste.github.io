@@ -1,6 +1,7 @@
 const video = document.getElementById('video');
 const startButton = document.getElementById('startButton');
 const stopButton = document.getElementById('stopButton');
+const independentButton = document.getElementById('independentButton');
 const resultDiv = document.getElementById('result');
 const processedImage = document.getElementById('processedImage');
 
@@ -73,5 +74,17 @@ async function detectTrash() {
     }
 }
 
+async function startIndependentProcessing() {
+    try {
+        const response = await fetch('/start-independent');
+        const message = await response.text();
+        alert(message);
+    } catch (error) {
+        console.error('Error starting independent processing:', error);
+        alert('Error starting independent processing.');
+    }
+}
+
 startButton.addEventListener('click', startDetection);
 stopButton.addEventListener('click', stopDetection);
+independentButton.addEventListener('click', startIndependentProcessing);
