@@ -22,26 +22,25 @@
     </header>
     <main>
         <h2>Live Trash Detection</h2>
-        <video id="video" width="640" height="480" autoplay></video>
+        <div class="video-container">
+            <div>
+                <h3>Live Video Feed</h3>
+                <video id="video" width="640" height="480" autoplay></video>
+            </div>
+            <div>
+                <h3>Processed Frame</h3>
+                <img id="processedImage" alt="Processed Frame" width="640" height="480" />
+            </div>
+        </div>
         <div class="controls">
             <button id="startButton">Start Detection</button>
             <button id="stopButton">Stop Detection</button>
         </div>
-        <div id="output"></div>
+        <div id="result"></div>
     </main>
     <footer>
         <p>&copy; 2025 EcoFriend. All rights reserved.</p>
     </footer>
     <script src="../script.js"></script>
-    <script>
-        document.getElementById('startButton').addEventListener('click', () => {
-            fetch('/run-python')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('output').innerText = data;
-                })
-                .catch(error => console.error('Error:', error));
-        });
-    </script>
 </body>
 </html>
