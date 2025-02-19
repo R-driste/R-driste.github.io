@@ -1,10 +1,13 @@
 const express = require('express');
 const path = require('path');
+const axios = require('axios');
+const bodyParser = require('body-parser');
 const { spawn } = require('child_process');
 const app = express();
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, '../')));
+app.use(bodyParser.json({ limit: '50mb' }));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/index.html'));
@@ -31,29 +34,17 @@ app.get('/process', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-    res.sendFile(path.join(__dirname, '../pages/home.html'));
+    res.sendFile(path.join(__dirname, '../pages/index.html'));
 });
 
-app.get('/run-python', (req, res) => {
-    const pythonProcess = spawn('python', ['C:/Users/stidr/ECOFRIEND/R-driste.github.io/computer_vision.py']);
-    
-    let scriptOutput = '';
-
-    pythonProcess.stdout.on('data', (data) => {
-        scriptOutput += data.toString();
-    });
-
-    pythonProcess.stderr.on('data', (data) => {
-        console.error(`stderr: ${data}`);
-    });
-
-    pythonProcess.on('close', (code) => {
-        if (code === 0) {
-            res.send(scriptOutput);
-        } else {
-            res.status(500).send(`Python script exited with code ${code}`);
-        }
-    });
+app.post('/run-python', async (req, res) => {
+    try {
+        const response = await axios.post('http://localhost:5000/detect', req.body);
+        res.json(response.data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error running Python script');
+    }
 });
 
 app.listen(port, () => {

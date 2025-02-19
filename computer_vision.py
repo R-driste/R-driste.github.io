@@ -10,8 +10,7 @@ net = cv2.dnn.readNetFromCaffe(prototxt_path, caffemodel_path)
 CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"]
 
 # Start video capture
-cap = cv2.VideoCapture(0)
-
+cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
 while True:
     ret, frame = cap.read()
