@@ -3,6 +3,7 @@ const path = require('path');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const { spawn } = require('child_process');
+const config = require('../config');
 const app = express();
 const port = 3000;
 
@@ -29,10 +30,6 @@ app.get('/tips', (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/tips.html'));
 });
 
-app.get('/process', (req, res) => {
-    res.sendFile(path.join(__dirname, '../pages/process.html'));
-});
-
 app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, '../pages/index.html'));
 });
@@ -48,8 +45,7 @@ app.post('/run-python', async (req, res) => {
 });
 
 app.get('/start-independent', (req, res) => {
-    const pythonProcess = spawn('python', ['C:/Users/stidr/ECOFRIEND/R-driste.github.io/object_detection.py']);
-
+    const pythonProcess = spawn('python', ['computer_vision.py']);
     pythonProcess.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
     });
@@ -69,17 +65,18 @@ app.get('/start-independent', (req, res) => {
 
 app.post('/chat', async (req, res) => {
     const { message } = req.body;
-    const apiKey = 'YOUR_OPENAI_API_KEY'; // Replace with your OpenAI API key
+    const apiKey = config.openaiApiKey;
+    const maxTokens = 150; // Increase the maximum tokens limit
 
     console.log('Received message:', message);
 
     try {
-        const response = await axios.post('https://api.openai.com/v1/engines/davinci-codex/completions', {
-            prompt: message,
-            max_tokens: 150,
-            n: 1,
-            stop: null,
+        const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+            model: 'gpt-4o-mini',
+            messages: [{ role: 'user', content: message }],
+            max_tokens: maxTokens,
             temperature: 0.7,
+            stop: ['.', '!', '?'] // Stop at the end of the first sentence, exclamation, or question
         }, {
             headers: {
                 'Authorization': `Bearer ${apiKey}`,
@@ -87,11 +84,16 @@ app.post('/chat', async (req, res) => {
             }
         });
 
-        const chatResponse = response.data.choices[0].text.trim();
+        const chatResponse = response.data.choices[0].message.content.trim();
         console.log('ChatGPT response:', chatResponse);
         res.json({ response: chatResponse });
     } catch (error) {
         console.error('Error communicating with ChatGPT API:', error);
+        if (error.response) {
+            console.error('Error response data:', error.response.data);
+            console.error('Error response status:', error.response.status);
+            console.error('Error response headers:', error.response.headers);
+        }
         res.json({ response: "Sorry, I'm not available right now." });
     }
 });

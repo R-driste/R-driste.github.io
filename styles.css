@@ -30,6 +30,10 @@ nav a:hover {
     text-decoration: underline;
 }
 
+nav img {
+    vertical-align: top;
+}
+
 main {
     margin: 2em auto;
     width: 80%;
